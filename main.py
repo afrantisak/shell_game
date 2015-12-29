@@ -1,39 +1,15 @@
 #!/usr/bin/env python
 import sys
+import PyQt4
+import PyQt4.uic
 from PyQt4 import QtGui
 
-class MainWindow(QtGui.QWidget):
-    
-    def __init__(self):
-        super(MainWindow, self).__init__()
-        self.initUI()
-        
-    def initUI(self):
-        
-        title = QtGui.QLabel('Title')
-        author = QtGui.QLabel('Author')
-        review = QtGui.QLabel('Review')
+mainWindowUi = PyQt4.uic.loadUiType("main.ui")[0]
 
-        titleEdit = QtGui.QLineEdit()
-        authorEdit = QtGui.QLineEdit()
-        reviewEdit = QtGui.QTextEdit()
-
-        grid = QtGui.QGridLayout()
-        grid.setSpacing(10)
-
-        grid.addWidget(title, 1, 0)
-        grid.addWidget(titleEdit, 1, 1)
-
-        grid.addWidget(author, 2, 0)
-        grid.addWidget(authorEdit, 2, 1)
-
-        grid.addWidget(review, 3, 0)
-        grid.addWidget(reviewEdit, 3, 1, 5, 1)
-        
-        self.setLayout(grid) 
-        
-        self.setGeometry(300, 300, 350, 300)
-        self.setWindowTitle('Review')    
+class MainWindow(QtGui.QMainWindow, mainWindowUi):
+    def __init__(self, parent=None):
+        QtGui.QMainWindow.__init__(self, parent)
+        self.setupUi(self)
         self.show()
         
 def main():
