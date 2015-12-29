@@ -13,24 +13,31 @@
   <property name="windowTitle">
    <string>Shell Game</string>
   </property>
-  <widget class="QWidget" name="horizontalLayoutWidget">
-   <property name="geometry">
-    <rect>
-     <x>1</x>
-     <y>9</y>
-     <width>691</width>
-     <height>411</height>
-    </rect>
-   </property>
-   <layout class="QHBoxLayout" name="horizontalLayout">
-    <item>
-     <widget class="QTextBrowser" name="challengeText"/>
-    </item>
-    <item>
-     <widget class="QTextBrowser" name="consoleText"/>
-    </item>
-   </layout>
-  </widget>
+  <property name="toolTip">
+   <string>}</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="1" column="0">
+    <widget class="QTextBrowser" name="challengeText"/>
+   </item>
+   <item row="0" column="0">
+    <widget class="QLabel" name="challengeLabel">
+     <property name="text">
+      <string>Challenge</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="1">
+    <widget class="QLabel" name="terminalLabel">
+     <property name="text">
+      <string>Terminal</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="1">
+    <widget class="QTextEdit" name="terminalText"/>
+   </item>
+  </layout>
  </widget>
  <resources/>
  <connections/>
