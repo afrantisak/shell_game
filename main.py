@@ -13,11 +13,24 @@ challenges = [{'name': 'Go Home',
                'answer': 'ls'},
               ]
 
-mainWindowUi = PyQt4.uic.loadUiType("main.ui")[0]
-class MainWindow(QtGui.QDialog, mainWindowUi):
+class FakeTerminal(QtGui.QTextEdit):
+    def __init__(self,  parent):
+        super(FakeTerminal,  self).__init__(parent)
+
+    def keyPressEvent(self,  event):
+        if event.key() == Qt.Key_Return:
+            if event.modifiers() == Qt.ControlModifier:
+                event = QKeyEvent(QEvent.KeyPress,  Qt.Key_Return, Qt.NoModifier)
+            else:
+                self.emit(SIGNAL("sendMessage"))
+                return
+
+        QTextEdit.keyPressEvent(self,  event)
+
+class MainWindow(QtGui.QDialog):
     def __init__(self, parent=None):
         QtGui.QMainWindow.__init__(self, parent)
-        self.setupUi(self)
+        self.setupUi()
 
         self.challenge_number = 0
         self.challenge = challenges[self.challenge_number]
@@ -25,6 +38,18 @@ class MainWindow(QtGui.QDialog, mainWindowUi):
         self.challengeText.setText(self.challenge['desc'])
         self.terminalText.setFocus()
         self.show()
+
+    def setupUi(self):
+        self.resize(697, 423)
+        self.gridLayout = QtGui.QGridLayout(self)
+        self.challengeText = QtGui.QTextBrowser(self)
+        self.gridLayout.addWidget(self.challengeText, 1, 0, 1, 1)
+        self.challengeLabel = QtGui.QLabel(self)
+        self.gridLayout.addWidget(self.challengeLabel, 0, 0, 1, 1)
+        self.terminalLabel = QtGui.QLabel(self)
+        self.gridLayout.addWidget(self.terminalLabel, 0, 1, 1, 1)
+        self.terminalText = QtGui.QTextEdit(self)
+        self.gridLayout.addWidget(self.terminalText, 1, 1, 1, 1)
         
 def main():
     signal.signal(signal.SIGINT, signal.SIG_DFL)
