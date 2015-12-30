@@ -4,6 +4,8 @@ import signal
 import PyQt4
 import PyQt4.uic
 from PyQt4 import QtGui
+from PyQt4 import QtCore
+from PyQt4.QtCore import Qt
 
 challenges = [{'name': 'Go Home',
                'desc': 'This is your first challenge:  You need to go home.  Home is represented by the tilde ("~").',
@@ -14,18 +16,15 @@ challenges = [{'name': 'Go Home',
               ]
 
 class FakeTerminal(QtGui.QTextEdit):
+    enterPressed = QtCore.pyqtSignal([str])
+    
     def __init__(self,  parent):
         super(FakeTerminal,  self).__init__(parent)
 
     def keyPressEvent(self,  event):
+        QtGui.QTextEdit.keyPressEvent(self,  event)
         if event.key() == Qt.Key_Return:
-            if event.modifiers() == Qt.ControlModifier:
-                event = QKeyEvent(QEvent.KeyPress,  Qt.Key_Return, Qt.NoModifier)
-            else:
-                self.emit(SIGNAL("sendMessage"))
-                return
-
-        QTextEdit.keyPressEvent(self,  event)
+            self.enterPressed.emit(self.toPlainText())
 
 class MainWindow(QtGui.QDialog):
     def __init__(self, parent=None):
@@ -48,8 +47,12 @@ class MainWindow(QtGui.QDialog):
         self.gridLayout.addWidget(self.challengeLabel, 0, 0, 1, 1)
         self.terminalLabel = QtGui.QLabel(self)
         self.gridLayout.addWidget(self.terminalLabel, 0, 1, 1, 1)
-        self.terminalText = QtGui.QTextEdit(self)
+        self.terminalText = FakeTerminal(self)
         self.gridLayout.addWidget(self.terminalText, 1, 1, 1, 1)
+        self.terminalText.enterPressed.connect(self.handle_enter)
+
+    def handle_enter(self, text):
+        print "ENTER", text
         
 def main():
     signal.signal(signal.SIGINT, signal.SIG_DFL)
