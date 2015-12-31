@@ -62,7 +62,6 @@ class MainWindow(QtGui.QDialog):
         self.terminalText.enterPressed.connect(self.handle_enter)
 
     def handle_enter(self, text):
-        print len(text), len(self.challenge['answer'])
         if text == self.challenge['answer']:
             next_challenge = self.challenge_number + 1
             if next_challenge >= len(challenges):
