@@ -2,7 +2,6 @@
 import sys
 import signal
 import PyQt4
-import PyQt4.uic
 from PyQt4 import QtGui
 from PyQt4 import QtCore
 from PyQt4.QtCore import Qt
